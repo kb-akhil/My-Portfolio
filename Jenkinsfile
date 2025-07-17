@@ -10,7 +10,7 @@ pipeline {
     stage('Deploy to S3') {
       steps {
         withAWS(credentials: 'aws-s3-creds', region: "${REGION}") {
-          sh 'aws s3 sync . s3://$BUCKET_NAME --delete'
+          bat 'aws s3 sync . s3://%BUCKET_NAME% --delete'
         }
       }
     }
