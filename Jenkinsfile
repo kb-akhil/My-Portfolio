@@ -7,12 +7,10 @@ pipeline {
   }
 
   stages {
-    stage('Sync to S3') {
+    stage('Deploy to S3') {
       steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-s3-secret-key']]) {
-          sh '''
-            aws s3 sync . s3://$BUCKET_NAME --region $REGION --delete
-          '''
+        withAWS(credentials: 'aws-s3-creds', region: "${REGION}") {
+          sh 'aws s3 sync . s3://$BUCKET_NAME --delete'
         }
       }
     }
